@@ -1,0 +1,27 @@
+{
+  "name": "cyber-elx",
+  "version": "1.0.0",
+  "description": "CLI tool to upload/download ELX custom pages",
+  "main": "src/index.js",
+  "bin": {
+    "cyber-elx": "./bin/cyber-elx.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "elx",
+    "cli",
+    "liquid",
+    "templates"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.6.0",
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "inquirer": "^8.2.6",
+    "jsonc-parser": "^3.2.0"
+  }
+}
