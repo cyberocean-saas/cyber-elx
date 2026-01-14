@@ -16,7 +16,6 @@ function createApiClient(config) {
     },
 
     async updatePages(pages) {
-      console.log(pages);
       try {
         const response = await client.post('/api/plugin_api/el-x/update_elx_pages', { pages });
         return response.data;

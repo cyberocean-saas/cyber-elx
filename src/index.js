@@ -1,9 +1,11 @@
 const { program } = require('commander');
 const chalk = require('chalk');
+const fs = require('fs');
+const path = require('path');
 const { readConfig, writeConfig, validateConfig, configExists } = require('./config');
 const { readCache, writeCache, getPageTimestamp, setPageTimestamp } = require('./cache');
 const { createApiClient } = require('./api');
-const { ensureDirectories, writePageFile, getLocalPages, DEFAULT_TEMPLATE_KEYS, fileExists, readPageFile, getFilePath } = require('./files');
+const { ensureDirectories, writePageFile, getLocalPages, DEFAULT_TEMPLATE_KEYS, fileExists, readPageFile, getFilePath, getFolder } = require('./files');
 const { promptInitConfig, confirmOverwrite, confirmUpload } = require('./prompts');
 
 program
@@ -117,9 +119,22 @@ async function downloadPages(cwd, config, force = false) {
   const defaultPages = defaultsResponse.pages || [];
 
   console.log(chalk.blue('Downloading default pages (read-only)...'));
+  // Clear existing defaults before downloading
+  const defaultsDirs = [
+    path.join(cwd, 'defaults', 'sections'),
+    path.join(cwd, 'defaults', 'templates'),
+    path.join(cwd, 'defaults', 'layouts')
+  ];
+  for (const dir of defaultsDirs) {
+    if (fs.existsSync(dir)) {
+      fs.rmSync(dir, { recursive: true });
+    }
+  }
+  ensureDirectories(cwd);
+  
   for (const page of defaultPages) {
     writePageFile(page.type, page.key, page.content, cwd, true);
-    console.log(chalk.gray(`  ✓ defaults/${page.type === 'template' ? 'templates' : 'sections'}/${page.key}.liquid`));
+    console.log(chalk.gray(`  ✓ defaults/${getFolder(page.type)}/${page.key}.liquid`));
   }
 
   const remotePagesMap = new Map();
@@ -148,7 +163,7 @@ async function downloadPages(cwd, config, force = false) {
   for (const fullKey of allKeys) {
     const [type, key] = fullKey.split(':');
     const remotePage = remotePagesMap.get(fullKey);
-    const filePath = `${type === 'template' ? 'templates' : 'sections'}/${key}.liquid`;
+    const filePath = `${getFolder(type)}/${key}.liquid`;
     
     const localExists = fileExists(type, key, cwd);
     const localContent = localExists ? readPageFile(type, key, cwd) : null;
@@ -249,7 +264,7 @@ async function uploadPages(cwd, config, force = false) {
   for (const localPage of nonEmptyPages) {
     const fullKey = `${localPage.type}:${localPage.key}`;
     const remotePage = remotePagesMap.get(fullKey);
-    const filePath = `${localPage.type === 'template' ? 'templates' : 'sections'}/${localPage.key}.liquid`;
+    const filePath = `${getFolder(localPage.type)}/${localPage.key}.liquid`;
     const cachedTimestamp = getPageTimestamp(cache, localPage.type, localPage.key);
 
     if (remotePage) {
@@ -291,7 +306,7 @@ async function uploadPages(cwd, config, force = false) {
   const updatedPages = response.updatedpages || [];
   for (const page of updatedPages) {
     setPageTimestamp(cache, page.type, page.key, page.updated_at);
-    const filePath = `${page.type === 'template' ? 'templates' : 'sections'}/${page.key}.liquid`;
+    const filePath = `${getFolder(page.type)}/${page.key}.liquid`;
     console.log(chalk.green(`  ✓ ${filePath} (uploaded)`));
   }
 

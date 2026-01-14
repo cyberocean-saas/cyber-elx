@@ -16,8 +16,10 @@ function ensureDirectories(cwd = process.cwd()) {
   const dirs = [
     path.join(cwd, 'sections'),
     path.join(cwd, 'templates'),
+    path.join(cwd, 'layouts'),
     path.join(cwd, 'defaults', 'sections'),
-    path.join(cwd, 'defaults', 'templates')
+    path.join(cwd, 'defaults', 'templates'),
+    path.join(cwd, 'defaults', 'layouts')
   ];
   for (const dir of dirs) {
     if (!fs.existsSync(dir)) {
@@ -29,6 +31,7 @@ function ensureDirectories(cwd = process.cwd()) {
 function getFolder(type) {
   if (type === 'template') return 'templates';
   if (type === 'section') return 'sections';
+  if (type === 'layout') return 'layouts';
   return type + 's';
 }
 
@@ -67,6 +70,7 @@ function getLocalPages(cwd = process.cwd()) {
   
   const templatesDir = path.join(cwd, 'templates');
   const sectionsDir = path.join(cwd, 'sections');
+  const layoutsDir = path.join(cwd, 'layouts');
   
   if (fs.existsSync(templatesDir)) {
     const files = fs.readdirSync(templatesDir).filter(f => f.endsWith('.liquid'));
@@ -83,6 +87,15 @@ function getLocalPages(cwd = process.cwd()) {
       const key = file.replace('.liquid', '');
       const content = fs.readFileSync(path.join(sectionsDir, file), 'utf-8');
       pages.push({ type: 'section', key, content });
+    }
+  }
+  
+  if (fs.existsSync(layoutsDir)) {
+    const files = fs.readdirSync(layoutsDir).filter(f => f.endsWith('.liquid'));
+    for (const file of files) {
+      const key = file.replace('.liquid', '');
+      const content = fs.readFileSync(path.join(layoutsDir, file), 'utf-8');
+      pages.push({ type: 'layout', key, content });
     }
   }
   
