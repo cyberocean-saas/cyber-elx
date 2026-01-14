@@ -235,14 +235,7 @@ async function uploadPages(cwd, config, force = false) {
   const localPages = getLocalPages(cwd);
   
   if (localPages.length === 0) {
-    console.log(chalk.yellow('No pages found to upload. Create .liquid files in sections/ or templates/ folders.'));
-    return;
-  }
-
-  const nonEmptyPages = localPages.filter(p => p.content.trim() !== '');
-  
-  if (nonEmptyPages.length === 0) {
-    console.log(chalk.yellow('All local pages are empty. Nothing to upload.'));
+    console.log(chalk.yellow('No pages found to upload. Create .liquid files in sections/, templates/ or layouts/ folders.'));
     return;
   }
 
@@ -261,7 +254,7 @@ async function uploadPages(cwd, config, force = false) {
 
   const pagesToUpload = [];
 
-  for (const localPage of nonEmptyPages) {
+  for (const localPage of localPages) {
     const fullKey = `${localPage.type}:${localPage.key}`;
     const remotePage = remotePagesMap.get(fullKey);
     const filePath = `${getFolder(localPage.type)}/${localPage.key}.liquid`;
@@ -287,7 +280,7 @@ async function uploadPages(cwd, config, force = false) {
     }
 
     pagesToUpload.push(localPage);
-    console.log(chalk.cyan(`  → ${filePath} (will upload)`));
+    console.log(chalk.cyan(`  → ${filePath} (will upload)` + (localPage.content === '' ? ' [EMPTY]' : '')));
   }
 
   if (pagesToUpload.length === 0) {
@@ -312,7 +305,10 @@ async function uploadPages(cwd, config, force = false) {
 
   writeCache(cache, cwd);
   
-  console.log(chalk.green(`\n✓ Upload complete: ${updatedPages.length} page(s) updated`));
+  console.log(chalk.green(`\n✓ Upload complete: ${updatedPages.length} page(s) updated [${updatedPages.map(p => p.key).join(', ')}]`));
+  if(response.debug) {
+    console.log(chalk.gray('Debug info:'), response.debug);
+  }
 }
 
 program.parse();
