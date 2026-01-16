@@ -1,6 +1,22 @@
 # CyberOcean Custom Elx Theme
 
-## Steps
+## Summary
+
+- [CyberOcean Custom Elx Theme](#cyberocean-custom-elx-theme)
+  - [Summary](#summary)
+  - [Steps to create/update the theme](#steps-to-createupdate-the-theme)
+  - [Defaults](#defaults)
+  - [Customization](#customization)
+    - [Layout](#layout)
+    - [Sections](#sections)
+    - [Templates](#templates)
+    - [Available Liquid Variables](#available-liquid-variables)
+  - [Website URLs](#website-urls)
+
+
+## Steps to create/update the theme
+
+Note: Even in a new fresh theme, The files are already created, but empty, the only files you need to create are the additional sections you plan to use (if you won't use some empty files, just keep them empty, removing is not required)
 
 1. Make a detailled plan of the website
   - Layout
@@ -13,20 +29,20 @@
     + Ask for images/icons if you need (The user can upload files from the admin dashboard and give you back the links)
     + Ask about the language to use
     + Ask about the colors to use
-2. Start by creating the layout
-  - Create the `layouts/theme.liquid` file
-  - Create the `sections/header.liquid` file
-  - Create the `sections/footer.liquid` file
+2. Start by updating the layout
+  - Update the `layouts/theme.liquid` file
+  - Update the `sections/header.liquid` file
+  - Update the `sections/footer.liquid` file
   - **Important**: If there will be modifications on the existing, then always start by creating a fresh copy from the default files, and then modify it
-3. Create the rest of the pages (With the sections IN CASE YOU USED THEM)
-  - Create the `templates/home_page.liquid`
-  - Create the `templates/course_page.liquid`
-  - Create the `templates/about_page.liquid`
-  - Create the `templates/category_page.liquid`
-  - Create the `templates/courses_page.liquid`
-  - Create the `templates/contact_page.liquid`
-  - Create the `templates/blogs_page.liquid`
-  - Create the `templates/blog_page.liquid`
+3. Update the rest of the pages (With the sections IN CASE YOU USED THEM)
+  - Update the `templates/home_page.liquid`
+  - Update the `templates/course_page.liquid`
+  - Update the `templates/about_page.liquid`
+  - Update the `templates/category_page.liquid`
+  - Update the `templates/courses_page.liquid`
+  - Update the `templates/contact_page.liquid`
+  - Update the `templates/blogs_page.liquid`
+  - Update the `templates/blog_page.liquid`
   - Rules:
     + **Do not** use translation unless asked for it
     + **Do not** try to always to copy paste the default files, use them as a reference, unless asked for it
@@ -35,6 +51,8 @@
     + **Always** keep sections, templates and layouts file names simple
       > Correct: `sections/header.liquid`
       > Wrong: `sections/header_custom_elx.liquid`
+4. Check your work
+  - Ensure you have imported the sections in the right way `{% section '<SECTION_NAME>_custom_elx.liquid' %}` (If you used sections)
 
 ## Defaults
 
@@ -48,6 +66,9 @@ The default files are stored in the `defaults` folder
 ## Customization
 
 - You are not forced to use all the available variables in the templates/sections/layouts, you can use only the variables you need
+- To add custom JS/CSS simply add them as sections, then import them where needed, example to make a main.js file:
+    > Create a file `sections/main_js.liquid`
+    > Import it in any place as: `{% section 'main_js_custom_elx.liquid' %}`
 
 ### Layout
 
@@ -75,35 +96,12 @@ The default files are stored in the `defaults` folder
 
 ### Sections
 
-- The only allowed section names for now are:
-  - `header`
-  - `footer`
-  - `hero`
-  - `ad`
-  - `banner`
-  - `banner_1`
-  - `banner_2`
-  - `banner_3`
-  - `reviews`
-  - `menu`
-  - `menu_1`
-  - `menu_2`
-  - `menu_3`
-  - `category`
-  - `category_related`
-  - `categories`
-  - `category_element`
-  - `course`
-  - `course_related`
-  - `courses`
-  - `course_element`
-  - `testimonial`
-  - `about`
-  - `cta`
-  - `cta_1`
-  - `cta_2`
-  - `cta_3`
-Note: The sections can be loaded using the `section` tag from any template, layout or section, using the syntax: `{% section '<SECTION_NAME>_custom_elx.liquid' %}`, example: `{% section 'header_custom_elx.liquid' %}`
+- The sections can be loaded using the `section` tag from any template, layout or section, using the syntax: `{% section '<SECTION_NAME>_custom_elx.liquid' %}`, example: `{% section 'header_custom_elx.liquid' %}`
+- Examples:
+  > **WRONG:** section file `sections/header_custom_elx.liquid`
+  > **CORRECT:** section file `sections/header.liquid`
+  > **WRONG:** Import section file as `{% section 'header.liquid' %}`
+  > **CORRECT:** Import section file as `{% section 'header_custom_elx.liquid' %}`
 
 ### Templates
 
@@ -119,11 +117,18 @@ Note: The sections can be loaded using the `section` tag from any template, layo
 
 ### Available Liquid Variables
 
+- All variables have default values, so use them without setting default values
+
 **Global Available vairables:** 
 Note: Available in All pages, and configurable from the website administration, recommended to use, so the user can change them from the admin, without the need to edit the code
 - Path to the logo image:
   + Name: `logo`
-  + Sample: `https://example.com/logo.png`
+  + Sample:
+    ```json
+    {
+      "path": "https://example.com/logo.png"
+    }
+    ```
 - Primary Color:
   + Name: `primary`
   + Sample: `#ff0000`
@@ -565,3 +570,15 @@ Note: Available in All pages, and configurable from the website administration, 
     }
   }
   ```
+
+## Website URLs
+
+- The website main URL `/` automatically redirects to the home page
+- The Home page URL: `/p/home`
+- The Blogs page URL: `/p/blogs`
+- The Blog page URL: `/p/blog/<ARTICLE_ID>`
+- The Courses page URL: `/p/courses`
+- The Course page URL: `/p/course/<COURSE_ID>`
+- The Contact page URL: `/p/contact`
+- The Category page URL: `/p/categories/<CATEGORY_ID>`
+- The About page URL: `/p/about`

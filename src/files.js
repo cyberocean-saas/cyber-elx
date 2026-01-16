@@ -48,7 +48,11 @@ function readPageFile(type, key, cwd = process.cwd()) {
   if (!fs.existsSync(filePath)) {
     return null;
   }
-  return fs.readFileSync(filePath, 'utf-8');
+  const content = fs.readFileSync(filePath, 'utf-8');
+  if(content == `<!-- EMPTY FILE -->`) {
+    return "";
+  }
+  return content;
 }
 
 function writePageFile(type, key, content, cwd = process.cwd(), isDefault = false) {
@@ -57,7 +61,11 @@ function writePageFile(type, key, content, cwd = process.cwd(), isDefault = fals
   if (!fs.existsSync(dir)) {
     fs.mkdirSync(dir, { recursive: true });
   }
-  fs.writeFileSync(filePath, content, 'utf-8');
+  if(content) {
+    fs.writeFileSync(filePath, content, 'utf-8');
+  } else {
+    fs.writeFileSync(filePath, `<!-- EMPTY FILE -->`, 'utf-8');
+  }
 }
 
 function fileExists(type, key, cwd = process.cwd()) {
@@ -76,7 +84,10 @@ function getLocalPages(cwd = process.cwd()) {
     const files = fs.readdirSync(templatesDir).filter(f => f.endsWith('.liquid'));
     for (const file of files) {
       const key = file.replace('.liquid', '');
-      const content = fs.readFileSync(path.join(templatesDir, file), 'utf-8');
+      let content = fs.readFileSync(path.join(templatesDir, file), 'utf-8');
+      if(content == `<!-- EMPTY FILE -->`) {
+        content = "";
+      }
       pages.push({ type: 'template', key, content });
     }
   }
@@ -85,7 +96,10 @@ function getLocalPages(cwd = process.cwd()) {
     const files = fs.readdirSync(sectionsDir).filter(f => f.endsWith('.liquid'));
     for (const file of files) {
       const key = file.replace('.liquid', '');
-      const content = fs.readFileSync(path.join(sectionsDir, file), 'utf-8');
+      let content = fs.readFileSync(path.join(sectionsDir, file), 'utf-8');
+      if(content == `<!-- EMPTY FILE -->`) {
+        content = "";
+      }
       pages.push({ type: 'section', key, content });
     }
   }
@@ -94,7 +108,10 @@ function getLocalPages(cwd = process.cwd()) {
     const files = fs.readdirSync(layoutsDir).filter(f => f.endsWith('.liquid'));
     for (const file of files) {
       const key = file.replace('.liquid', '');
-      const content = fs.readFileSync(path.join(layoutsDir, file), 'utf-8');
+      let content = fs.readFileSync(path.join(layoutsDir, file), 'utf-8');
+      if(content == `<!-- EMPTY FILE -->`) {
+        content = "";
+      }
       pages.push({ type: 'layout', key, content });
     }
   }

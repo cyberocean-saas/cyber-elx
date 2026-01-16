@@ -17,6 +17,7 @@ program
   .command('init')
   .description('Initialize configuration and download pages')
   .action(async () => {
+    await updateDevDoc();
     try {
       const cwd = process.cwd();
       
@@ -57,6 +58,7 @@ program
   .description('Download pages from server')
   .option('-f, --force', 'Force download without confirmation prompts')
   .action(async (options) => {
+    await updateDevDoc();
     try {
       const cwd = process.cwd();
       const config = readConfig(cwd);
@@ -79,6 +81,7 @@ program
   .description('Upload pages to server')
   .option('-f, --force', 'Force upload without confirmation prompts')
   .action(async (options) => {
+    await updateDevDoc();
     try {
       const cwd = process.cwd();
       const config = readConfig(cwd);
@@ -208,19 +211,19 @@ async function downloadPages(cwd, config, force = false) {
       }
     }
 
-    if (localContent !== remoteContent) {
+    // if (localContent !== remoteContent) {
       writePageFile(type, key, remoteContent, cwd);
       if (remoteTimestamp) {
         setPageTimestamp(cache, type, key, remoteTimestamp);
       }
       console.log(chalk.green(`  ✓ ${filePath} (updated)`));
       downloadedCount++;
-    } else {
-      if (remoteTimestamp) {
-        setPageTimestamp(cache, type, key, remoteTimestamp);
-      }
-      console.log(chalk.gray(`  - ${filePath} (unchanged)`));
-    }
+    // } else {
+    //   if (remoteTimestamp) {
+    //     setPageTimestamp(cache, type, key, remoteTimestamp);
+    //   }
+    //   console.log(chalk.gray(`  - ${filePath} (unchanged)`));
+    // }
   }
 
   writeCache(cache, cwd);
@@ -273,10 +276,10 @@ async function uploadPages(cwd, config, force = false) {
         }
       }
 
-      if (localPage.content === remotePage.content) {
-        console.log(chalk.gray(`  - ${filePath} (unchanged)`));
-        continue;
-      }
+      // if (localPage.content === remotePage.content) {
+      //   console.log(chalk.gray(`  - ${filePath} (unchanged)`));
+      //   continue;
+      // }
     }
 
     pagesToUpload.push(localPage);
@@ -310,5 +313,36 @@ async function uploadPages(cwd, config, force = false) {
     console.log(chalk.gray('Debug info:'), response.debug);
   }
 }
+
+async function updateDevDoc() {
+  const devDocDir = path.join(process.cwd(), 'DEV_DOC');
+  const configFileExists = fs.existsSync(path.join(process.cwd(), 'cyber-elx.jsonc'));
+
+  if (configFileExists) {
+    if (!fs.existsSync(devDocDir)) {
+      fs.mkdirSync(devDocDir, { recursive: true });
+    }
+
+    const files = ['ThemeDev.md', 'README.md'];
+    
+    for (const file of files) {
+      const sourceContent = fs.readFileSync(path.join(__dirname, '..', 'DEV_DOC', file), 'utf-8');
+      const localPath = path.join(devDocDir, file);
+      let localContent = '';
+      
+      try {
+        localContent = fs.readFileSync(localPath, 'utf-8');
+      } catch (err) {
+      }
+      
+      if (sourceContent !== localContent) {
+        fs.writeFileSync(localPath, sourceContent);
+        console.log(chalk.green(`DEV_DOC/${file} was updated`));
+      }
+    }
+  }
+}
+
+
 
 program.parse();
