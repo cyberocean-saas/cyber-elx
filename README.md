@@ -1,6 +1,6 @@
 # cyber-elx
 
-CLI tool to upload/download ELX custom pages (Liquid templates).
+CyberOcean CLI tool to upload/download ELX custom pages (Liquid templates).
 
 ## Installation
 
