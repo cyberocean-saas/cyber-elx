@@ -1,6 +1,8 @@
 # cyber-elx
 
 CyberOcean CLI tool to upload/download ELX custom pages (Liquid templates).
+For detailed AI development documentation, see [DEV_DOC.md](DEV_DOC.md).
+
 
 ## Installation
 
