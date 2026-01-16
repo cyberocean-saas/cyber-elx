@@ -52,6 +52,7 @@ Options:
 your-project/
 ├── cyber-elx.jsonc     # Config file (url + token)
 ├── .cache              # Timestamps cache (auto-generated)
+├── layouts/            # Custom layouts (*.liquid)
 ├── sections/           # Custom sections (*.liquid)
 ├── templates/          # Custom templates (*.liquid)
 └── defaults/           # Read-only default templates
