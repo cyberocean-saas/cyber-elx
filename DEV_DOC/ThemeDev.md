@@ -273,7 +273,8 @@ Note: Available in All pages, and configurable from the website administration, 
   + Sample: `"My Website"`
 - Navbar categories style:
   + Name: `navbarCategoriesStyle`
-  + Sample: `true` or `false` (If true, the categories will be displayed in the navbar as a dropdown menu, parent [with parentId == null])
+  + Sample: `true` or `false` (If true, the categories should be displayed in the navbar as a dropdown menu, parent [with parentId == null])
+  + Important: If `true`, all categories `category.parentId` will be `null`
 - Language:
   + Name: `lang`
   + Sample: `"en"`, `"ar"` or `"fr"`
@@ -577,7 +578,7 @@ Note: Available in All pages, and configurable from the website administration, 
 - The Home page URL: `/p/home`
 - The Blogs page URL: `/p/blogs`
 - The Blog page URL: `/p/blog/<ARTICLE_ID>`
-- The Courses page URL: `/p/courses`
+- The Courses page URL: `/p/courses` (Doesn't use it, unless asked for it, since clients prefer to make the users navigate to the categories page then the courses)
 - The Course page URL: `/p/course/<COURSE_ID>`
 - The Contact page URL: `/p/contact`
 - The Category page URL: `/p/categories/<CATEGORY_ID>`

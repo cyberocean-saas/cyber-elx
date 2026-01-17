@@ -11,7 +11,7 @@ const { promptInitConfig, confirmOverwrite, confirmUpload } = require('./prompts
 program
   .name('cyber-elx')
   .description('CLI tool to upload/download ELX custom pages')
-  .version('1.0.0');
+  .version('1.0.7');
 
 program
   .command('init')
