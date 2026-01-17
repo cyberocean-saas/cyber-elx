@@ -4,12 +4,17 @@ CyberOcean CLI tool to upload/download ELX custom pages (Liquid templates).
 For detailed AI development documentation, see [DEV_DOC.md](DEV_DOC.md).
 
 
-## Installation
+## Install
 
 ```bash
-npm install -g .
-# or
-npm link
+npm install -g cyber-elx
+```
+
+
+## Update
+
+```bash
+npm update -g cyber-elx
 ```
 
 ## Usage
