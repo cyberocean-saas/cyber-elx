@@ -5,7 +5,7 @@ const path = require('path');
 const { readConfig, writeConfig, validateConfig, configExists } = require('./config');
 const { readCache, writeCache, getPageTimestamp, setPageTimestamp } = require('./cache');
 const { createApiClient } = require('./api');
-const { ensureDirectories, writePageFile, getLocalPages, DEFAULT_TEMPLATE_KEYS, fileExists, readPageFile, getFilePath, getFolder } = require('./files');
+const { ensureDirectories, writePageFile, getLocalPages, DEFAULT_TEMPLATE_KEYS, fileExists, readPageFile, getFilePath, getFolder, updateDevDoc } = require('./files');
 const { promptInitConfig, confirmOverwrite, confirmUpload } = require('./prompts');
 
 program
@@ -17,7 +17,6 @@ program
   .command('init')
   .description('Initialize configuration and download pages')
   .action(async () => {
-    await updateDevDoc();
     try {
       const cwd = process.cwd();
       
@@ -32,6 +31,8 @@ program
 
       console.log(chalk.blue('Testing connection...'));
       const api = createApiClient(config);
+      
+      await updateDevDoc();
       
       try {
         await api.getPages();
@@ -311,35 +312,6 @@ async function uploadPages(cwd, config, force = false) {
   console.log(chalk.green(`\n✓ Upload complete: ${updatedPages.length} page(s) updated [${updatedPages.map(p => p.key).join(', ')}]`));
   if(response.debug) {
     console.log(chalk.gray('Debug info:'), response.debug);
-  }
-}
-
-async function updateDevDoc() {
-  const devDocDir = path.join(process.cwd(), 'DEV_DOC');
-  const configFileExists = fs.existsSync(path.join(process.cwd(), 'cyber-elx.jsonc'));
-
-  if (configFileExists) {
-    if (!fs.existsSync(devDocDir)) {
-      fs.mkdirSync(devDocDir, { recursive: true });
-    }
-
-    const files = ['ThemeDev.md', 'README.md'];
-    
-    for (const file of files) {
-      const sourceContent = fs.readFileSync(path.join(__dirname, '..', 'DEV_DOC', file), 'utf-8');
-      const localPath = path.join(devDocDir, file);
-      let localContent = '';
-      
-      try {
-        localContent = fs.readFileSync(localPath, 'utf-8');
-      } catch (err) {
-      }
-      
-      if (sourceContent !== localContent) {
-        fs.writeFileSync(localPath, sourceContent);
-        console.log(chalk.green(`DEV_DOC/${file} was updated`));
-      }
-    }
   }
 }
 

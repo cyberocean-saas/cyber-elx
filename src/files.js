@@ -119,6 +119,35 @@ function getLocalPages(cwd = process.cwd()) {
   return pages;
 }
 
+async function updateDevDoc() {
+  const devDocDir = path.join(process.cwd(), 'DEV_DOC');
+  const configFileExists = fs.existsSync(path.join(process.cwd(), 'cyber-elx.jsonc'));
+
+  if (configFileExists) {
+    if (!fs.existsSync(devDocDir)) {
+      fs.mkdirSync(devDocDir, { recursive: true });
+    }
+
+    const files = ['ThemeDev.md', 'README.md'];
+    
+    for (const file of files) {
+      const sourceContent = fs.readFileSync(path.join(__dirname, '..', 'DEV_DOC', file), 'utf-8');
+      const localPath = path.join(devDocDir, file);
+      let localContent = '';
+      
+      try {
+        localContent = fs.readFileSync(localPath, 'utf-8');
+      } catch (err) {
+      }
+      
+      if (sourceContent !== localContent) {
+        fs.writeFileSync(localPath, sourceContent);
+        console.log(chalk.green(`DEV_DOC/${file} was updated`));
+      }
+    }
+  }
+}
+
 module.exports = {
   DEFAULT_TEMPLATE_KEYS,
   ensureDirectories,
@@ -127,5 +156,6 @@ module.exports = {
   readPageFile,
   writePageFile,
   fileExists,
-  getLocalPages
+  getLocalPages,
+  updateDevDoc
 };
