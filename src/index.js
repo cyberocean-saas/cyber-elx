@@ -3,10 +3,11 @@ const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
 const { readConfig, writeConfig, validateConfig, configExists } = require('./config');
-const { readCache, writeCache, getPageTimestamp, setPageTimestamp } = require('./cache');
+const { readCache, writeCache, getPageTimestamp, setPageTimestamp, getSpaTimestamp, setSpaTimestamp } = require('./cache');
 const { createApiClient } = require('./api');
-const { ensureDirectories, writePageFile, getLocalPages, DEFAULT_TEMPLATE_KEYS, fileExists, readPageFile, getFilePath, getFolder, updateDevDoc } = require('./files');
+const { ensureDirectories, writePageFile, getLocalPages, DEFAULT_TEMPLATE_KEYS, fileExists, readPageFile, getFilePath, getFolder, updateDevDoc, SPA_CONFIGS, writeSpaFile, getLocalSpaFiles } = require('./files');
 const { promptInitConfig, confirmOverwrite, confirmUpload } = require('./prompts');
+const { compileComponentTemplates, componentObjectToJsCode, parseComponentJsCode } = require('./vue-utils');
 
 program
   .name('cyber-elx')
@@ -230,6 +231,78 @@ async function downloadPages(cwd, config, force = false) {
   writeCache(cache, cwd);
   
   console.log(chalk.blue(`\nDownload complete: ${downloadedCount} downloaded, ${skippedCount} skipped`));
+  
+  // Download SPA folders
+  await downloadSpaFolders(cwd, api, cache, force);
+  
+  writeCache(cache, cwd);
+}
+
+async function downloadSpaFolders(cwd, api, cache, force = false) {
+  console.log(chalk.blue('\n--- SPA Folders ---'));
+  
+  const spaEndpoints = {
+    general_pages: { get: () => api.getGeneralPages(), name: 'SPA_general_pages' },
+    teacher_dashboard: { get: () => api.getTeacherDashboard(), name: 'SPA_teacher_dashboard' },
+    student_dashboard: { get: () => api.getStudentDashboard(), name: 'SPA_student_dashboard' }
+  };
+  
+  for (const [spaKey, endpoint] of Object.entries(spaEndpoints)) {
+    console.log(chalk.blue(`\nDownloading ${endpoint.name}...`));
+    
+    try {
+      const response = await endpoint.get();
+      const remoteItems = response.items || [];
+      const remoteUpdatedAt = response.updated_at || null;
+      const cachedTimestamp = getSpaTimestamp(cache, spaKey);
+      
+      // Check for conflicts
+      if (remoteUpdatedAt && cachedTimestamp && remoteUpdatedAt > cachedTimestamp && !force) {
+        const shouldOverwrite = await confirmOverwrite(endpoint.name, 'has been modified on server');
+        if (!shouldOverwrite) {
+          console.log(chalk.yellow(`  ⊘ ${endpoint.name} (skipped)`));
+          continue;
+        }
+      }
+      
+      // Get expected files from config
+      const config = SPA_CONFIGS[spaKey];
+      const expectedFiles = config.files.map(f => f.name);
+      
+      // Create a map of remote items by name
+      const remoteItemsMap = new Map();
+      for (const item of remoteItems) {
+        remoteItemsMap.set(item.name, item);
+      }
+      
+      // Download/create each expected file
+      for (const fileConfig of config.files) {
+        const remoteItem = remoteItemsMap.get(fileConfig.name);
+        let content = '';
+        
+        if (remoteItem && remoteItem.data) {
+          if (fileConfig.type === 'vue-component') {
+            // Convert component object back to JS code
+            content = componentObjectToJsCode(remoteItem.data);
+          } else {
+            // CSS or JS - raw content
+            content = remoteItem.data;
+          }
+        }
+        
+        writeSpaFile(spaKey, fileConfig.name, content, cwd);
+        console.log(chalk.green(`  ✓ ${endpoint.name}/${fileConfig.name}`));
+      }
+      
+      // Update cache timestamp
+      if (remoteUpdatedAt) {
+        setSpaTimestamp(cache, spaKey, remoteUpdatedAt);
+      }
+      
+    } catch (err) {
+      console.log(chalk.yellow(`  ⚠ Could not download ${endpoint.name}: ${err.message}`));
+    }
+  }
 }
 
 async function uploadPages(cwd, config, force = false) {
@@ -313,8 +386,112 @@ async function uploadPages(cwd, config, force = false) {
   if(response.debug) {
     console.log(chalk.gray('Debug info:'), response.debug);
   }
+  
+  // Upload SPA folders
+  await uploadSpaFolders(cwd, api, cache, force);
+  
+  writeCache(cache, cwd);
 }
 
-
+async function uploadSpaFolders(cwd, api, cache, force = false) {
+  console.log(chalk.blue('\n--- SPA Folders ---'));
+  
+  const spaEndpoints = {
+    general_pages: { 
+      get: () => api.getGeneralPages(), 
+      set: (items) => api.setGeneralPages(items), 
+      name: 'SPA_general_pages' 
+    },
+    teacher_dashboard: { 
+      get: () => api.getTeacherDashboard(), 
+      set: (items) => api.setTeacherDashboard(items), 
+      name: 'SPA_teacher_dashboard' 
+    },
+    student_dashboard: { 
+      get: () => api.getStudentDashboard(), 
+      set: (items) => api.setStudentDashboard(items), 
+      name: 'SPA_student_dashboard' 
+    }
+  };
+  
+  for (const [spaKey, endpoint] of Object.entries(spaEndpoints)) {
+    console.log(chalk.blue(`\nUploading ${endpoint.name}...`));
+    
+    try {
+      // Get local files
+      const localFiles = getLocalSpaFiles(spaKey, cwd);
+      
+      if (localFiles.length === 0) {
+        console.log(chalk.yellow(`  No files found in ${endpoint.name}`));
+        continue;
+      }
+      
+      // Check for server conflicts
+      const remoteResponse = await endpoint.get();
+      const remoteUpdatedAt = remoteResponse.updated_at || null;
+      const cachedTimestamp = getSpaTimestamp(cache, spaKey);
+      
+      if (remoteUpdatedAt && cachedTimestamp && remoteUpdatedAt > cachedTimestamp && !force) {
+        const shouldUpload = await confirmUpload(endpoint.name, 'has been modified on server since last download');
+        if (!shouldUpload) {
+          console.log(chalk.yellow(`  ⊘ ${endpoint.name} (skipped)`));
+          continue;
+        }
+      }
+      
+      // Prepare items for upload
+      const itemsToUpload = [];
+      let hasError = false;
+      
+      for (const file of localFiles) {
+        const item = {
+          name: file.name,
+          type: file.type,
+          data: null
+        };
+        
+        if (file.type === 'vue-component') {
+          // Parse and compile Vue component
+          if (!file.content || file.content.trim() === '') {
+            item.data = null;
+          } else {
+            try {
+              const componentObj = parseComponentJsCode(file.content);
+              const compiledComponent = compileComponentTemplates(componentObj);
+              item.data = compiledComponent;
+            } catch (err) {
+              console.log(chalk.red(`  ✗ ${endpoint.name}/${file.name}: Vue compilation failed - ${err.message}`));
+              hasError = true;
+              break;
+            }
+          }
+        } else {
+          // CSS or JS - raw content
+          item.data = file.content || '';
+        }
+        
+        itemsToUpload.push(item);
+        console.log(chalk.cyan(`  → ${endpoint.name}/${file.name}`));
+      }
+      
+      if (hasError) {
+        console.log(chalk.red(`  Upload cancelled for ${endpoint.name} due to compilation errors`));
+        continue;
+      }
+      
+      // Upload to server
+      const response = await endpoint.set(itemsToUpload);
+      
+      if (response.updated_at) {
+        setSpaTimestamp(cache, spaKey, response.updated_at);
+      }
+      
+      console.log(chalk.green(`  ✓ ${endpoint.name} uploaded successfully`));
+      
+    } catch (err) {
+      console.log(chalk.red(`  ✗ Could not upload ${endpoint.name}: ${err.message}`));
+    }
+  }
+}
 
 program.parse();

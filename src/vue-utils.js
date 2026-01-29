@@ -1,13 +1,29 @@
 const { compile } = require('vue-template-compiler');
 
+/**
+ * Parses a component JavaScript code string into an object
+ * @param {string} componentText - JavaScript code representing the component
+ * @returns {Object} - Parsed component object
+ */
 function parseComponentJsCode(componentText) {
-  var parsedComponent = eval(`(${componentText.replace("module.exports =", "")})`);
+  var codeToEval = componentText.replace("module.exports =", "");
+  if(codeToEval.endsWith(";")) {
+    codeToEval = codeToEval.slice(0, -1);
+  }
+  var parsedComponent = eval(`(${codeToEval})`);
   for(var key of Object.keys(parsedComponent)) {
-    parsedComponent[key] = parsedComponent[key]?.trim() || parsedComponent[key];
+    if(typeof parsedComponent[key] === "string") {
+      parsedComponent[key] = parsedComponent[key].trim();
+    }
   }
   return parsedComponent;
 }
 
+/**
+ * Converts a component object to JavaScript code (For file saving)
+ * @param {Object} component - Component definition with code.template
+ * @returns {string} - JavaScript code representing the component
+ */
 function componentObjectToJsCode(component) {
   var newComponent = Object.keys(component).reduce((final, key) => {
     if(key == "compiledTemplate" || !component[key]) return final;
@@ -19,18 +35,20 @@ function componentObjectToJsCode(component) {
   Object.keys(component).forEach(key => {
     if(key == "compiledTemplate" || !component[key]) return;
     var newContent = (typeof component[key] === "string") ? component[key] : JSON.stringify(component[key]);
-    newContent = "\n" + newContent.trim();
-    // Add Tabs
-    newContent = "  " + newContent.replace(/\n/g, "\n    ");
+    newContent = "\n    " + newContent.trim();
+    // // Add Tabs
+    // newContent = "  " + newContent.replace(/\n/g, "\n    ");
     // Add comments
     if(key == "template") {
-      newContent = "/* html */`" + newContent + "`";
+      newContent = "\/* html *\/`" + newContent + "\n  `";
+    } else if(key == "style") {
+      newContent = "\/* css *\/`" + newContent + "\n  `";
     } else if(key == "name") {
       newContent = "\"" + newContent.trim() + "\"";
-    } else  if(key == "props") {
+    } else  if(key == "props" && typeof component[key] !== "string") {
       // Add nothing
     } else {
-      newContent = "/* js */`" + newContent + "`";
+      newContent = "\/* js *\/`" + newContent + "\n  `";
     }
     // Replace
     jsCode = jsCode.replace("#" + key.toUpperCase(), newContent);
@@ -44,7 +62,7 @@ function componentObjectToJsCode(component) {
  * @returns {Object} - Same component with `compiledTemplate` added to code
  */
 function compileComponentTemplates(component) {
-  const compiled = compile(component.code.template);
+  const compiled = compile(component.template);
 
   if (compiled.errors.length > 0) {
     console.warn(`Template compilation errors:`, compiled.errors);
@@ -52,14 +70,11 @@ function compileComponentTemplates(component) {
 
   return {
     ...component,
-    code: {
-      ...component.code,
-      compiledTemplate: {
-        render: compiled.render,
-        staticRenderFns: compiled.staticRenderFns,
-        errors: compiled.errors,
-        tips: compiled.tips
-      }
+    compiledTemplate: {
+      render: compiled.render,
+      staticRenderFns: compiled.staticRenderFns,
+      errors: compiled.errors,
+      tips: compiled.tips
     }
   };
 }

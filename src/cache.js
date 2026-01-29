@@ -10,13 +10,15 @@ function getCachePath(cwd = process.cwd()) {
 function readCache(cwd = process.cwd()) {
   const cachePath = getCachePath(cwd);
   if (!fs.existsSync(cachePath)) {
-    return { pages: {} };
+    return { pages: {}, spa: {} };
   }
   try {
     const content = fs.readFileSync(cachePath, 'utf-8');
-    return JSON.parse(content);
+    const cache = JSON.parse(content);
+    if (!cache.spa) cache.spa = {};
+    return cache;
   } catch (e) {
-    return { pages: {} };
+    return { pages: {}, spa: {} };
   }
 }
 
@@ -42,6 +44,18 @@ function setPageTimestamp(cache, type, key, updated_at) {
   cache.pages[cacheKey] = { updated_at };
 }
 
+// SPA cache functions (per-folder caching)
+function getSpaTimestamp(cache, spaKey) {
+  return cache.spa[spaKey]?.updated_at || null;
+}
+
+function setSpaTimestamp(cache, spaKey, updated_at) {
+  if (!cache.spa) {
+    cache.spa = {};
+  }
+  cache.spa[spaKey] = { updated_at };
+}
+
 module.exports = {
   CACHE_FILE,
   getCachePath,
@@ -49,5 +63,7 @@ module.exports = {
   writeCache,
   getPageCacheKey,
   getPageTimestamp,
-  setPageTimestamp
+  setPageTimestamp,
+  getSpaTimestamp,
+  setSpaTimestamp
 };
