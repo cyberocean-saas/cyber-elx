@@ -476,6 +476,12 @@ Note: Available in All pages, and configurable from the website administration, 
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `contact_page`
+- To Post contact info, you should send a `POST /p/contact-post-message` request with:
+  + `name`
+  + `email`
+  + `subject`
+  + `message`
+  + It accepts dynamic fields (Add as many as you want, like `phone`, `address`, etc.)
 
 **About Page Available vairables:**
 - Page template key:
