@@ -2,6 +2,7 @@ const { program } = require('commander');
 const chalk = require('chalk');
 const fs = require('fs');
 const path = require('path');
+const packageJson = require('../package.json');
 const { readConfig, writeConfig, validateConfig, configExists } = require('./config');
 const { readCache, writeCache, getPageTimestamp, setPageTimestamp, getSpaTimestamp, setSpaTimestamp } = require('./cache');
 const { createApiClient } = require('./api');
@@ -12,7 +13,7 @@ const { compileComponentTemplates, componentObjectToJsCode, parseComponentJsCode
 program
   .name('cyber-elx')
   .description('CLI tool to upload/download ELX custom pages')
-  .version('1.1.0');
+  .version(packageJson.version);
 
 program
   .command('init')
