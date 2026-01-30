@@ -18,6 +18,14 @@ program
   .version(packageJson.version, '-v, --version', 'Output the version number');
 
 program
+  .command('version')
+  .description('Output the version number')
+  .action(async () => {
+    console.log('Version: ' + packageJson.version);
+    process.exit(0);
+  });
+
+program
   .command('init')
   .description('Initialize configuration and download pages')
   .action(async () => {
