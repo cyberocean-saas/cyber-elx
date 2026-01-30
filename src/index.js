@@ -15,13 +15,7 @@ program
   .description('CLI tool to upload/download ELX custom pages');
 
 program
-  .option('-v, -V, --version', 'output the version number')
-  .hook('preAction', (thisCommand) => {
-    if (thisCommand.opts().version) {
-      console.log(packageJson.version);
-      process.exit(0);
-    }
-  });
+  .version(packageJson.version, '-v, --version', 'Output the version number');
 
 program
   .command('init')
