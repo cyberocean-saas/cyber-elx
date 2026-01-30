@@ -7,14 +7,14 @@ For detailed AI development documentation, see [DEV_DOC.md](DEV_DOC.md).
 ## Install
 
 ```bash
-npm install -g cyber-elx
+sudo npm install -g cyber-elx
 ```
 
 
 ## Update
 
 ```bash
-npm update -g cyber-elx
+sudo npm update -g cyber-elx
 ```
 
 ## Usage
