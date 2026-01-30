@@ -12,7 +12,7 @@ const { compileComponentTemplates, componentObjectToJsCode, parseComponentJsCode
 program
   .name('cyber-elx')
   .description('CLI tool to upload/download ELX custom pages')
-  .version('1.0.7');
+  .version('1.1.0');
 
 program
   .command('init')
