@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const chalk = require('chalk');
 
 const DEFAULT_TEMPLATE_KEYS = [
   'home_page',
