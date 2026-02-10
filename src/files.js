@@ -243,7 +243,7 @@ async function updateDevDoc() {
       fs.mkdirSync(devDocDir, { recursive: true });
     }
 
-    const files = ['ThemeDev.md', 'README.md', 'LoginRegisterPagesDev.md', 'PaymentPageDev.md'];
+    const files = fs.readdirSync(path.join(__dirname, '..', 'DEV_DOC'));
     
     for (const file of files) {
       const sourceContent = fs.readFileSync(path.join(__dirname, '..', 'DEV_DOC', file), 'utf-8');

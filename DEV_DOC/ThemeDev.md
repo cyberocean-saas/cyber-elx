@@ -11,6 +11,16 @@
     - [Sections](#sections)
     - [Templates](#templates)
     - [Available Liquid Variables](#available-liquid-variables)
+      - [Global Available vairables:](#global-available-vairables)
+      - [Home Page Available vairables:](#home-page-available-vairables)
+      - [Course Page Available vairables:](#course-page-available-vairables)
+      - [Courses Page Available vairables:](#courses-page-available-vairables)
+      - [Category Page Available vairables:](#category-page-available-vairables)
+      - [Blog Page Available vairables:](#blog-page-available-vairables)
+      - [Blogs Page Available vairables:](#blogs-page-available-vairables)
+      - [Contact Page Available vairables:](#contact-page-available-vairables)
+      - [About Page Available vairables:](#about-page-available-vairables)
+      - [Objects Structure:](#objects-structure)
   - [Website URLs](#website-urls)
 
 
@@ -119,7 +129,7 @@ The default files are stored in the `defaults` folder
 
 - All variables have default values, so use them without setting default values
 
-**Global Available vairables:** 
+#### Global Available vairables:
 Note: Available in All pages, and configurable from the website administration, recommended to use, so the user can change them from the admin, without the need to edit the code
 - Path to the logo image:
   + Name: `logo`
@@ -293,7 +303,7 @@ Note: Available in All pages, and configurable from the website administration, 
     }
     ```
 
-**Home Page Available vairables:**
+#### Home Page Available vairables:
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `home_page`
@@ -339,8 +349,12 @@ Note: Available in All pages, and configurable from the website administration, 
       ...
     ]
     ```
+- To subscribe to newsletter, you should send a `POST /p/newsletter-post-message` request with:
+  + `body.email`
+  + The endpoint will return `{ "success": true }` if the subscribtion was successfully
+  + Note: Do not make the `<form>` post, but use JS to post, since the endpoint to do not handle redirects, then if succesful show a success dialog
 
-**Course Page Available vairables:**
+#### Course Page Available vairables:
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `course_page`
@@ -386,7 +400,7 @@ Note: Available in All pages, and configurable from the website administration, 
   + Sample: `true` or `false`
   + Course Url if purchased: `<ADMIN_URL>/p/el-x/course-player/<COURSE_ID>`
 
-**Courses Page Available vairables:**
+#### Courses Page Available vairables:
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `courses_page`
@@ -421,7 +435,7 @@ Note: Available in All pages, and configurable from the website administration, 
   + `?sort_by_tag=...` => handled by the server
   + `?sort_by_direction=...` => handled by the server
 
-**Category Page Available vairables:**
+#### Category Page Available vairables:
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `categories_page`
@@ -441,7 +455,7 @@ Note: Available in All pages, and configurable from the website administration, 
     { ... }, // Category object
     ```
 
-**Blog Page Available vairables:**
+#### Blog Page Available vairables:
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `blog_page`
@@ -455,7 +469,7 @@ Note: Available in All pages, and configurable from the website administration, 
     { ... }, // Article object
     ```
 
-**Blogs Page Available vairables:**
+#### Blogs Page Available vairables:
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `blogs_page`
@@ -472,7 +486,7 @@ Note: Available in All pages, and configurable from the website administration, 
     ]
     ```
 
-**Contact Page Available vairables:**
+#### Contact Page Available vairables:
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `contact_page`
@@ -482,8 +496,10 @@ Note: Available in All pages, and configurable from the website administration, 
   + `subject`
   + `message`
   + It accepts dynamic fields (Add as many as you want, like `phone`, `address`, etc.)
+  + The endpoint will return `{ "success": true }` if the message was sent successfully
+  + Note: Do not make the `<form>` post, but use JS to post, since the endpoint to do not handle redirects, then if succesful show a success dialog
 
-**About Page Available vairables:**
+#### About Page Available vairables:
 - Page template key:
   + Name: `template`
   + Value: key that includes the string `about_page`
@@ -506,7 +522,7 @@ Note: Available in All pages, and configurable from the website administration, 
     ]
     ```
 
-**Objects Structure:**
+#### Objects Structure:
 - Course Object:
   ```json
   {

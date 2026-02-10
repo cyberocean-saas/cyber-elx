@@ -76,9 +76,9 @@ function createApiClient(config) {
 
     async setStudentDashboard(items) {
       const response = await client.post('/api/plugin_api/el-x/student_dashboard_elx_spa', { items });
-      // if(response.data?.debug) {
-      //   console.log(response.data.debug);
-      // }
+      if(response.data?.debug) {
+        console.log(response.data.debug);
+      }
       return response.data;
     }
   };
