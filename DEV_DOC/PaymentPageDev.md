@@ -525,6 +525,14 @@ module.exports = {
     }
   `,
   
+  computed: /* js */`
+    {
+      counterText() {
+        return this.counter + " Counts";
+      }
+    }
+  `,
+  
   methods: /* js */`
     {
       increment() {

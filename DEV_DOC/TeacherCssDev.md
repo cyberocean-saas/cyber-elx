@@ -7,6 +7,7 @@
   background: #e2f1ffff !important;
 }
 ```
+- **Do not** Edit `.v-main::before` or `.v-main::after` unless requested
 
 
 ## Navbar Customization Guide
