@@ -13,6 +13,9 @@ Custom Payment page for course enrollment. Handles guest vs logged-in user state
 ### [StudentCourseDetailPageDev.md](StudentCourseDetailPageDev.md)
 Custom Student Course Detail page for viewing individual courses. Displays course cover, header with logo/name, description, and accordion-style curriculum with chapters and lessons. Features a sticky price card sidebar with promo pricing, course info, buy/request button, and expiration text. Includes video modal for free preview playback and responsive 2-column to 1-column layout.
 
+### [StudentCoursePlayerDev.md](StudentCoursePlayerDev.md)
+Custom Student Course Player for enrolled students. Two-panel layout with sidebar (course card, description/files tabs, accordion chapters with progress tracking) and viewer area (video player with custom controls). Non-video elements (quiz, pdf, iframe, youtube) are rendered via a named slot by the parent component. Supports mobile responsive view switching and RTL for Arabic locales.
+
 ### [StudentCssDev.md](StudentCssDev.md)
 CSS customization guide for the Student Dashboard. Covers navbar styling (background color, profile button, dropdown menu) and sidebar styling (background, active items, hover effects, submenu items). Includes important notes about using `::before` for backgrounds and required `!important` overrides.
 

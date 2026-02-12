@@ -123,7 +123,7 @@ The Student Course Detail Page is rendered when a student views a specific cours
    - Expiration text
 8. **Video Modal** - Overlay with video player for free previews
 
-### Available translations
+### Available translations (Use what you need)
 
 - `courses-page.courses-list` → "Courses List"
 - `courses-page.course-description` → "Course Description"

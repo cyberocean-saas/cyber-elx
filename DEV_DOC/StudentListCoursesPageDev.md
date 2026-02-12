@@ -15,7 +15,7 @@
     - [Methods](#methods)
     - [Page Sections](#page-sections)
     - [Events to Emit](#events-to-emit)
-    - [Available translations](#available-translations)
+    - [Available translations (Use what you need)](#available-translations-use-what-you-need)
     - [Example Student List Courses Page:](#example-student-list-courses-page)
   - [Vue Component Format](#vue-component-format)
     - [Basic Structure](#basic-structure)
@@ -137,16 +137,40 @@ Each course object contains:
 |-------|--------------|-------------|
 | `loadCoursesByCategoryId` | Category card click | Filter courses by category: `$emit('loadCoursesByCategoryId', category.id)` |
 
-### Available translations
+### Available translations (Use what you need)
 
-`courses-page.no-grade-assigned` -> No grade assigned
+`courses-page.no-grade-assigned` -> You are not assigned to any grade yet!
 `courses-page.explore-the` -> Explore the
 `courses-page.categories` -> Categories
-`courses-page.featured-courses` -> Featured Courses
-`courses-page.explore-featured-courses` -> Featured Courses
-`courses-page.courses-on-promotion` -> Courses on Promotion
+`courses-page.featured-courses` -> Featured courses
+`courses-page.explore-featured-courses` -> featured courses
+`courses-page.courses-on-promotion` -> Courses on promotion
 `courses-page.courses` -> Courses
-`courses-page.on-promotion` -> On Promotion
+`courses-page.on-promotion` -> on promotion
+`courses-page.courses-list` -> Courses List
+`courses-page.course-description` -> Course Description
+`courses-page.course-content` -> Course Content
+`courses-page.free` -> FREE
+`courses-page.lessons` -> Lessons
+`courses-page.language` -> Language
+`courses-page.english` -> English
+`courses-page.get-course-free` -> Get the course for free
+`courses-page.buy-now` -> Buy now
+`courses-page.request-now` -> Request now
+`courses-page.expires-on` -> Expires on
+`courses-page.lifetime-access` -> Lifetime access
+`courses-page.featured-course` -> Featured Course
+`courses-page.certificate` -> Certificate
+`courses-page.chapters` -> chapters
+`courses-page.preview` -> Preview
+`courses-page.included` -> Included
+`courses-page.free-preview` -> Free Preview
+`courses-page.secure-payment` -> Secure Payment
+`courses-page.money-back-guarantee` -> Money Back Guarantee
+`courses-page.ready-to-learn` -> Ready to learn?
+`courses-page.start` -> Start
+`courses-page.promo` -> PROMO
+`courses-page.hot-deal` -> HOT DEAL
 - If you want another text, just put it in English
 
 ### Example Student List Courses Page:

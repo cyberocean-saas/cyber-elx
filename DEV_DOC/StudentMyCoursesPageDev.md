@@ -13,7 +13,7 @@
     - [websiteInfo Object](#websiteinfo-object)
     - [Page Sections](#page-sections)
     - [Events to Emit](#events-to-emit)
-    - [Available translations](#available-translations)
+    - [Available translations (Use what you need)](#available-translations-use-what-you-need)
     - [Example Student My Courses Page:](#example-student-my-courses-page)
   - [Vue Component Format](#vue-component-format)
     - [Basic Structure](#basic-structure)
@@ -107,7 +107,7 @@ Each course object contains:
 | `openCourse` | Open button click | Open the course player: `$emit('openCourse', item)` |
 | `openCertificate` | Certificate button click | Generate/view certificate: `$emit('openCertificate', item)` |
 
-### Available translations
+### Available translations (Use what you need)
 
 `student-courses.my-courses-list` -> My Course List
 `student-courses.no-courses-purchased` -> No courses purchased
