@@ -7,6 +7,7 @@
   - [Overview](#overview)
   - [Payment Page](#payment-page)
     - [Component Structure](#component-structure)
+    - [Project Colors](#project-colors)
     - [Available Props](#available-props)
     - [course Object](#course-object)
     - [user Object](#user-object)
@@ -44,6 +45,10 @@ The payment component must export a module with:
 - `template` - HTML template string
 - `style` - CSS styles string (optional but recommended)
 
+### Project Colors
+
+- Primary: `--elx-primary-color`
+- Secondary: `--elx-secondary-color`
 ### Available Props
 
 | Prop | Type | Description |

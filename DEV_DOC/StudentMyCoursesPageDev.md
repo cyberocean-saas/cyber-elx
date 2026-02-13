@@ -7,6 +7,7 @@
   - [Overview](#overview)
   - [Student My Courses Page](#student-my-courses-page)
     - [Component Structure](#component-structure)
+    - [Project Colors](#project-colors)
     - [Available Props](#available-props)
     - [cardsInfos Array](#cardsinfos-array)
     - [courses Array](#courses-array)
@@ -49,6 +50,11 @@ The component must export a module with:
 - `style` - CSS styles string (optional but recommended)
 - `data` - Local state (search field)
 - `computed` - Computed properties (filteredCourses, headers)
+
+### Project Colors
+
+- Primary: `--elx-primary-color`
+- Secondary: `--elx-secondary-color`
 
 ### Available Props
 

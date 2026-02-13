@@ -28,6 +28,9 @@ Custom Student My Courses page (student dashboard home). Shows statistics cards 
 ### [StudentProfileDev.md](StudentProfileDev.md)
 Custom Student Profile page for viewing and editing user information. Features view/edit mode toggle, profile image upload via CLoader component, name fields, grade selection (if enabled), and password change with real-time validation. Handles API calls to `/api/users/update_my_profile` and updates VueX store. Documents the `additionalFields` object for extensible user data.
 
+### [StudentSessionsPageDev.md](StudentSessionsPageDev.md)
+Custom Student Sessions page (live sessions calendar). Self-contained component with no props — fetches sessions and teachers via API. Displays monthly calendar with color-coded session indicators, navigation arrows, and month dropdown. Session detail dialog shows teacher, time, duration, attached files, and join button with status logic (Join Now, Upcoming, Not Started, Ended).
+
 ### [StudentStartupDev.md](StudentStartupDev.md)
 Available JavaScript variables for student-related customizations. Documents the student user object accessible via `$nuxt.$store.state.auth.user` including fields like id, name, email, phone, grade, and profile image.
 

@@ -21,6 +21,11 @@ The Student Course Detail Page is rendered when a student views a specific cours
 
 ## Student Course Detail Page
 
+### Project Colors
+
+- Primary: `--elx-primary-color`
+- Secondary: `--elx-secondary-color`
+
 ### Available Props
 
 | Prop | Type | Description |
@@ -29,7 +34,6 @@ The Student Course Detail Page is rendered when a student views a specific cours
 | `courseId` | String | The unique identifier of the course |
 | `onlineMode` | Boolean | Whether online payment is enabled |
 | `offlineMode` | Boolean | Whether offline/request mode is enabled |
-| `primaryColor` | String | The website's primary color (hex value) |
 
 ### The `course` Object
 

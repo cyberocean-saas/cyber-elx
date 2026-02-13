@@ -56,6 +56,11 @@ The Student Profile Page displays the current user's information and allows edit
 └─────────────────────────────────────────────────────────────┘
 ```
 
+### Project Colors
+
+- Primary: `--elx-primary-color`
+- Secondary: `--elx-secondary-color`
+
 ### Available Props
 
 | Prop | Type | Description |
@@ -239,6 +244,20 @@ The `isFormValid` computed property performs real-time validation:
 - `profile.save` → "Save"
 - `toast.profile-updated-successfully` → "Profile updated successfully"
 - `toast.error-saving-profile` → "Error saving profile"
+- `profile.student` → "Student"
+- `profile.courses` → "Courses"
+- `profile.personal-info` → "Personal Info"
+- `profile.enter-first-name` → "Enter first name"
+- `profile.enter-last-name` → "Enter last name"
+- `profile.not-specified` → "Not specified"
+- `profile.select-grade` → "Select grade"
+- `profile.enter-new-password` → "Enter new password"
+- `profile.confirm-password-placeholder` → "Confirm password"
+- `profile.profile-updated` → "Profile Updated!"
+- `profile.changes-saved` → "Your changes have been saved"
+- `profile.error-confirm-password` → "Please confirm your password"
+- `profile.error-enter-password` → "Please enter your new password"
+- `profile.error-passwords-not-match` → "Passwords do not match"
 
 If you want another text, just put it in English.
 

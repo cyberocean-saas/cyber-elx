@@ -1,6 +1,6 @@
 {
   "name": "cyber-elx",
-  "version": "1.1.12",
+  "version": "1.2.0",
   "description": "CyberOcean CLI tool to upload/download ELX custom pages",
   "main": "src/index.js",
   "bin": {
