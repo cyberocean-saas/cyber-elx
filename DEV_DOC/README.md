@@ -25,6 +25,9 @@ Custom Student List Courses page (course catalog). Displays categories grid, fea
 ### [StudentMyCoursesPageDev.md](StudentMyCoursesPageDev.md)
 Custom Student My Courses page (student dashboard home). Shows statistics cards (total courses, completed, certificates), course list with progress bars, and certificate generation for completed courses. Documents the cardsInfos structure, courses array with progress tracking, and available translation keys.
 
+### [StudentProfileDev.md](StudentProfileDev.md)
+Custom Student Profile page for viewing and editing user information. Features view/edit mode toggle, profile image upload via CLoader component, name fields, grade selection (if enabled), and password change with real-time validation. Handles API calls to `/api/users/update_my_profile` and updates VueX store. Documents the `additionalFields` object for extensible user data.
+
 ### [StudentStartupDev.md](StudentStartupDev.md)
 Available JavaScript variables for student-related customizations. Documents the student user object accessible via `$nuxt.$store.state.auth.user` including fields like id, name, email, phone, grade, and profile image.
 
