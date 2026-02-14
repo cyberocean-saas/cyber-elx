@@ -9,6 +9,10 @@
 ```
 - **Do not** Edit `.v-main::before` or `.v-main::after` unless requested
 
+### Project Colors (Required)
+
+- Primary: `--elx-primary-color`
+- Secondary: `--elx-secondary-color`
 
 ## Navbar Customization Guide
 

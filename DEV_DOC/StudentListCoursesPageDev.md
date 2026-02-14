@@ -7,7 +7,7 @@
   - [Overview](#overview)
   - [Student List Courses Page](#student-list-courses-page)
     - [Component Structure](#component-structure)
-    - [Project Colors](#project-colors)
+    - [Project Colors (Required)](#project-colors-required)
     - [Available Props](#available-props)
     - [allCategories Array](#allcategories-array)
     - [coursesList / promotedCourses Arrays](#courseslist--promotedcourses-arrays)
@@ -60,7 +60,7 @@ The component must export a module with:
 - `mounted` - Initialize slider width and resize listener
 - `beforeDestroy` - Clean up resize listener
 
-### Project Colors
+### Project Colors (Required)
 
 - Primary: `--elx-primary-color`
 - Secondary: `--elx-secondary-color`

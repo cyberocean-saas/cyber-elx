@@ -56,7 +56,7 @@ The Student Profile Page displays the current user's information and allows edit
 └─────────────────────────────────────────────────────────────┘
 ```
 
-### Project Colors
+### Project Colors (Required)
 
 - Primary: `--elx-primary-color`
 - Secondary: `--elx-secondary-color`

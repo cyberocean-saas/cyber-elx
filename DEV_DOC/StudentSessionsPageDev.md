@@ -57,7 +57,7 @@ Session Detail Dialog:
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Project Colors
+### Project Colors (Required)
 
 - Primary: `--elx-primary-color`
 - Secondary: `--elx-secondary-color`

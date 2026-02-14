@@ -21,7 +21,7 @@ The Student Course Detail Page is rendered when a student views a specific cours
 
 ## Student Course Detail Page
 
-### Project Colors
+### Project Colors (Required)
 
 - Primary: `--elx-primary-color`
 - Secondary: `--elx-secondary-color`

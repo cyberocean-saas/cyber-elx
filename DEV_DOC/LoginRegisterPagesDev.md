@@ -7,14 +7,14 @@
   - [Overview](#overview)
   - [Login Page](#login-page)
     - [Component Structure](#component-structure)
-    - [Project Colors](#project-colors)
+    - [Project Colors (Required)](#project-colors-required)
     - [Available Props](#available-props)
     - [Login Flow Steps](#login-flow-steps)
     - [Events to Emit](#events-to-emit)
     - [Example Login Page:](#example-login-page)
   - [Register Page](#register-page)
     - [Component Structure](#component-structure-1)
-    - [Project Colors](#project-colors-1)
+    - [Project Colors (Required)](#project-colors-required-1)
     - [Available Props](#available-props-1)
     - [inputsData Object](#inputsdata-object)
     - [Register Flow States](#register-flow-states)
@@ -51,7 +51,7 @@ The login component must export a module with:
 - `template` - HTML template string
 - `style` - CSS styles string (optional but recommended)
 
-### Project Colors
+### Project Colors (Required)
 
 - Primary: `--elx-primary-color`
 - Secondary: `--elx-secondary-color`
@@ -294,7 +294,7 @@ The register component must export a module with:
 - `template` - HTML template string
 - `style` - CSS styles string (optional but recommended)
 
-### Project Colors
+### Project Colors (Required)
 
 - Primary: `--elx-primary-color`
 - Secondary: `--elx-secondary-color`

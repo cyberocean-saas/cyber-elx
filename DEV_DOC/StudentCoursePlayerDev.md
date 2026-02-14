@@ -50,7 +50,7 @@ The Student Course Player is rendered when a student opens a course they are enr
 └─────────────────────────────────────────────────────────────────┘
 ```
 
-### Project Colors
+### Project Colors (Required)
 
 - Primary: `--elx-primary-color`
 - Secondary: `--elx-secondary-color`
