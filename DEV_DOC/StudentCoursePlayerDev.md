@@ -488,9 +488,10 @@ module.exports = {
   `,
   style: /* css */`
   .course-player {
-    width: calc(100% + 80px);
+    margin-left: -40px; /* To use all the width */
+    margin-right: -40px; /* To use all the width */
     margin-top: -12px;
-    height: calc(100vh - 76px);
+    height: calc(100vh - 64px);
   }
 
   .course-player .v-overlay--active {
