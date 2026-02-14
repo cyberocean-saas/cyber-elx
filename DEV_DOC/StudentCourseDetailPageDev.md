@@ -79,7 +79,7 @@ The Student Course Detail Page is rendered when a student views a specific cours
 | `pdf` | `mdi-file-pdf-box` | PDF document |
 | `quiz` | `mdi-clipboard-text-outline` | Quiz/assessment |
 | `iframe` | `mdi-picture-in-picture-bottom-right-outline` | Embedded iframe content |
-| (other) | `mdi-file` | Default file icon |
+| (other) | `mdi-play-box` | Default icon for other element types |
 
 ### Local State (data)
 
@@ -211,7 +211,7 @@ module.exports = {
                     <v-icon v-else-if="getElementById(elId).type == 'video'">mdi-youtube</v-icon>
                     <v-icon v-else-if="getElementById(elId).type == 'pdf'">mdi-file-pdf-box</v-icon>
                     <v-icon v-else-if="getElementById(elId).type == 'iframe'">mdi-picture-in-picture-bottom-right-outline</v-icon>
-                    <v-icon v-else>mdi-file</v-icon>
+                    <v-icon v-else>mdi-play-box</v-icon>
                     <span>{{ getElementById(elId).title }}</span>
                   </div>
                   <div class="lesson-right">
