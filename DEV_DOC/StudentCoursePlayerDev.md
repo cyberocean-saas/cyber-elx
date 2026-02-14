@@ -61,6 +61,7 @@ The Student Course Player is rendered when a student opens a course they are enr
 |------|------|-------------|
 | `user` | Object | The current logged-in user object (see structure below) |
 | `course` | Object | The course object with chapters, elements, files, and progress (see structure below) |
+| `dynamicElementsMetaData` | Array | Metadata for dynamic/custom element types (icon, label, key) |
 
 ### The `user` Object
 
@@ -118,7 +119,32 @@ The Student Course Player is rendered when a student opens a course they are enr
 | `quiz` | `mdi-help-box-multiple` | Quiz/assessment (rendered by parent via slot) |
 | `pdf` | `mdi-note` | PDF document (rendered by parent via slot) |
 | `iframe` | `mdi-text-box` | Embedded iframe content (rendered by parent via slot) |
-| (other) | `mdi-card` | Default icon for unknown types |
+| *dynamic* | From `dynamicElementsMetaData` | Custom element types defined in metadata |
+| *unknown* | `mdi-play-box` | Default fallback icon for unrecognized types |
+
+### The `dynamicElementsMetaData` Array
+
+This prop contains metadata for custom/dynamic element types. When rendering the element list, the component checks if the element type matches any entry in this array. If found, it uses the corresponding icon and label.
+
+```js
+[
+  {
+    key: "custom-quiz",      // String - Element type identifier (matches element.type)
+    icon: "mdi-puzzle",      // String - MDI icon name to display
+    label: "Custom Quiz"     // String - Display label for the element
+  },
+  {
+    key: "interactive",
+    icon: "mdi-gesture-tap",
+    label: "Interactive"
+  }
+]
+```
+
+**Element Icon Resolution Order:**
+1. Check for known types (`video`, `youtube`, `video-iframe`, `quiz`, `pdf`, `iframe`)
+2. Check if `element.type` matches any `dynamicElementsMetaData[].key`
+3. Fallback to default `mdi-play-box` icon
 
 ### Local State (data)
 
@@ -239,6 +265,7 @@ module.exports = {
   props: [
     'user',
     'course',
+    'dynamicElementsMetaData',
   ],
   template: /* html */`
   <div class="course-player" :style="coursePageStyle">
@@ -348,8 +375,12 @@ module.exports = {
                       </svg>
                       <span style="padding-left: 17px;">{{ capitalizeText(element.title) }}</span>
                     </v-list-item-content>
+                    <v-list-item-content v-else-if="dynamicElementsMetaData.find(de => de.key == element.type)" style="font-size: 12px; color: white;">
+                      <v-icon :style="(course.progressData[element.id]) ? 'color: #00dd04;' : ''" style="width: 19px; position: absolute; left: 7px; color: white;font-size:18px ;" >{{ dynamicElementsMetaData.find(de => de.key == element.type).icon }}</v-icon>
+                      <span style="padding-left: 17px;">{{ dynamicElementsMetaData.find(de => de.key == element.type).label }}</span>
+                    </v-list-item-content>
                     <v-list-item-content v-else style="font-size: 12px; color: white;" >
-                      <v-icon :style="(course.progressData[element.id]) ? 'color: #00dd04;' : ''" style="width: 19px; position: absolute; left: 7px; color: white;font-size:18px ;" >mdi-card</v-icon>
+                      <v-icon :style="(course.progressData[element.id]) ? 'color: #00dd04;' : ''" style="width: 19px; position: absolute; left: 7px; color: white;font-size:18px ;" >mdi-play-box</v-icon>
                       <span style="padding-left: 17px;">{{ capitalizeText(element.title) }}</span>
                     </v-list-item-content>
                   </v-list-item>
