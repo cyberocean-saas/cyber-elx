@@ -157,7 +157,7 @@ If you want another text, just put it in English.
 | Pattern | Description |
 |---------|-------------|
 | `@PV/courses/courses` | Link to courses list page (router-link) |
-| `@PVP/course-payment/{id}` | Link to payment page (opens in new tab) |
+| `@PVP/course-payment/{id}` | Link to payment/request page (opens in new tab) |
 
 ### Example Student Course Detail Page:
 ```js
