@@ -278,6 +278,7 @@ Note: Available in All pages, and configurable from the website administration, 
   + Sample: `"https://admin.example.com"`
   + Login url: `{{ adminUrl }}/public/el-x/login`
   + Register url: `{{ adminUrl }}/public/el-x/register`
+  + Logout url: `{{ adminUrl }}/p/el-x/logout`
 - Website name:
   + Name: `websiteName`
   + Sample: `"My Website"`
